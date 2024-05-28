@@ -1,35 +1,26 @@
 //
-//  ViewController.m
-//  监控主线程卡顿
+//  ViewController2.m
+//  监听主线程RunLoop卡顿
 //
-//  Created by LL on 2024/5/28.
+//  Created by LL on 2024/5/23.
 //
 
-#import "ViewController.h"
 #import "ViewController2.h"
 #import "WXLLagMonitoring.h"
 
-@interface ViewController ()
+
+@interface ViewController2 ()
 
 @property (nonatomic, strong) WXLLagMonitoring *monitor;
 
 @end
 
-@implementation ViewController
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    
-    self.monitor = [WXLLagMonitoring lagMonitoring];
-    [self.monitor startMonitor:^{
-        NSLog(@"APP 发生了卡顿");
-    }];
-}
+@implementation ViewController2
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.navigationItem.title = @"One View";
+    self.navigationItem.title = @"Two View";
     self.view.backgroundColor = UIColor.whiteColor;
     
     UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -41,7 +32,7 @@
     [self.view addSubview:button];
     
     UIButton *button2 = [UIButton buttonWithType:UIButtonTypeSystem];
-    [button2 setTitle:@"下一个页面" forState:UIControlStateNormal];
+    [button2 setTitle:@"上一个页面" forState:UIControlStateNormal];
     [button2 setBackgroundColor:UIColor.orangeColor];
     [button2 setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
     button2.frame = CGRectMake(CGRectGetMinX(button.frame), CGRectGetMaxY(button.frame) + 20, 100, 40);
@@ -57,7 +48,6 @@
     [self.view addSubview:textView];
 }
 
-
 - (void)buttonEvent {
     NSLog(@"耗时任务开始：%s-----%f", __func__, [NSDate timeIntervalSinceReferenceDate]);
     CFTimeInterval startTime = CACurrentMediaTime();
@@ -72,11 +62,15 @@
 }
 
 - (void)button2Event {
-    [self.navigationController pushViewController:[ViewController2 new] animated:YES];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     NSLog(@"%s----%f", __func__, [NSDate timeIntervalSinceReferenceDate]);
+}
+
+- (void)dealloc {
+    NSLog(@"%s", __func__);
 }
 
 @end
